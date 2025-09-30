@@ -17,9 +17,10 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    /* Light Blue Primary */
+    /* Gradient Blue Primary */
     --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
+    --primary-glow: 200 98% 70%;
     
     /* Dark Navy */
     --secondary: 222 47% 11%;
@@ -28,9 +29,12 @@ All colors MUST be HSL.
     --muted: 214 32% 91%;
     --muted-foreground: 215 16% 47%;
 
-    /* Light Blue Accent */
-    --accent: 213 97% 87%;
+    /* Cyan Accent */
+    --accent: 180 100% 50%;
     --accent-foreground: 222 47% 11%;
+    
+    /* Purple Highlight */
+    --highlight: 270 80% 60%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
@@ -41,17 +45,24 @@ All colors MUST be HSL.
 
     --radius: 0.75rem;
 
-    /* Custom gradient tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(222 47% 11%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(217 91% 60% / 0.1) 0%, hsl(213 97% 87% / 0.2) 100%);
+    /* Premium Gradient Tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(270 80% 60%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(217 91% 60% / 0.2) 0%, hsl(270 80% 60% / 0.1) 50%, hsl(180 100% 50% / 0.1) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(217 91% 60% / 0.05) 0%, hsl(270 80% 60% / 0.05) 100%);
+    --gradient-text: linear-gradient(135deg, hsl(217 91% 60%), hsl(180 100% 50%));
     
     /* Glass effect */
     --glass-bg: 0 0% 100% / 0.8;
     --glass-border: 217 91% 60% / 0.2;
     
-    /* Shadows */
-    --shadow-primary: 0 10px 40px -10px hsl(217 91% 60% / 0.3);
+    /* Premium Shadows */
+    --shadow-primary: 0 10px 40px -10px hsl(217 91% 60% / 0.4);
     --shadow-card: 0 4px 20px -2px hsl(222 47% 11% / 0.1);
+    --shadow-glow: 0 0 60px hsl(217 91% 60% / 0.3);
+    --shadow-accent: 0 8px 32px hsl(180 100% 50% / 0.3);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
@@ -66,6 +77,7 @@ All colors MUST be HSL.
 
     --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
+    --primary-glow: 200 98% 70%;
 
     --secondary: 217 33% 17%;
     --secondary-foreground: 0 0% 100%;
@@ -73,8 +85,10 @@ All colors MUST be HSL.
     --muted: 217 33% 17%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 217 33% 17%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 180 100% 50%;
+    --accent-foreground: 222 47% 11%;
+    
+    --highlight: 270 80% 60%;
 
     --destructive: 0 63% 31%;
     --destructive-foreground: 0 0% 100%;
@@ -85,6 +99,11 @@ All colors MUST be HSL.
     
     --glass-bg: 222 47% 11% / 0.8;
     --glass-border: 217 91% 60% / 0.3;
+    
+    --gradient-hero: linear-gradient(135deg, hsl(217 91% 60% / 0.1) 0%, hsl(270 80% 60% / 0.05) 50%, hsl(180 100% 50% / 0.05) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(217 91% 60% / 0.1) 0%, hsl(270 80% 60% / 0.1) 100%);
+    
+    --shadow-glow: 0 0 60px hsl(217 91% 60% / 0.5);
   }
 }
 
@@ -110,6 +129,13 @@ All colors MUST be HSL.
     border: 1px solid hsl(var(--glass-border));
   }
   
+  .gradient-text {
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
   .animate-fade-in {
     animation: fade-in 0.6s ease-out forwards;
   }
@@ -120,6 +146,18 @@ All colors MUST be HSL.
   
   .animate-scale-in {
     animation: scale-in 0.5s ease-out forwards;
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite;
+  }
+  
+  .page-transition {
+    animation: page-enter 0.4s ease-out forwards;
   }
 }
 
@@ -151,5 +189,34 @@ All colors MUST be HSL.
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 20px hsl(var(--primary) / 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 40px hsl(var(--primary) / 0.8));
+  }
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

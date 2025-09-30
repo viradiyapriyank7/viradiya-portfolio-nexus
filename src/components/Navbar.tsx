@@ -1,53 +1,32 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
   const navItems = [
-    { id: "home", label: "Home" },
-    { id: "skills", label: "Skills" },
-    { id: "projects", label: "Projects" },
-    { id: "services", label: "Services" },
-    { id: "testimonials", label: "Testimonials" },
-    { id: "faq", label: "FAQ" },
-    { id: "contact", label: "Contact" },
+    { id: "/", label: "Home" },
+    { id: "/about", label: "About" },
+    { id: "/portfolio", label: "Portfolio" },
+    { id: "/services", label: "Services" },
+    { id: "/testimonials", label: "Testimonials" },
+    { id: "/resume", label: "Resume" },
+    { id: "/faq", label: "FAQ" },
+    { id: "/contact", label: "Contact" },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
-
-      const sections = navItems.map((item) => document.getElementById(item.id));
-      const scrollPosition = window.scrollY + 100;
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(navItems[i].id);
-          break;
-        }
-      }
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.offsetTop - offset;
-      window.scrollTo({
-        top: elementPosition,
-        behavior: "smooth",
-      });
-      setIsOpen(false);
-    }
-  };
 
   return (
     <nav
@@ -57,34 +36,27 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          <a
-            href="#home"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection("home");
-            }}
-            className="text-2xl font-bold text-primary"
+          <Link
+            to="/"
+            className="text-2xl font-bold gradient-text hover:scale-110 transition-transform"
           >
             PV
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.id}
-                href={`#${item.id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection(item.id);
-                }}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  activeSection === item.id ? "text-primary" : "text-foreground/70"
+                to={item.id}
+                className={`text-sm font-medium transition-all hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-gradient-to-r after:from-primary after:via-accent after:to-[hsl(var(--highlight))] after:transition-all hover:after:w-full ${
+                  location.pathname === item.id ? "text-primary after:w-full" : "text-foreground/70"
                 }`}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
+            <ThemeToggle />
           </div>
 
           {/* Mobile Menu Button */}
@@ -101,20 +73,20 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden pb-4 animate-fade-in">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.id}
-                href={`#${item.id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection(item.id);
-                }}
+                to={item.id}
+                onClick={() => setIsOpen(false)}
                 className={`block py-3 text-sm font-medium transition-colors hover:text-primary ${
-                  activeSection === item.id ? "text-primary" : "text-foreground/70"
+                  location.pathname === item.id ? "text-primary" : "text-foreground/70"
                 }`}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
+            <div className="pt-4 border-t border-border">
+              <ThemeToggle />
+            </div>
           </div>
         )}
       </div>
