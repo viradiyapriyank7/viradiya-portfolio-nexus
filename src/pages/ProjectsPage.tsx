@@ -74,16 +74,26 @@ const ProjectsPage = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-32 pb-16 px-4">
-        <div className="container mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 animate-fade-in">
+      <section className="relative pt-32 pb-16 px-4 overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 -z-10">
+          <img 
+            src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1920&h=600&fit=crop" 
+            alt="Projects Background" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-secondary/90 via-secondary/80 to-background" />
+        </div>
+        
+        <div className="container mx-auto text-center relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium mb-6 animate-fade-in border border-white/20">
             <Sparkles size={16} />
             Portfolio Showcase
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-secondary animate-slide-up bg-clip-text">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white animate-slide-up">
             Featured Projects
           </h1>
-          <p className="text-lg md:text-xl text-foreground/70 max-w-3xl mx-auto animate-fade-in">
+          <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto animate-fade-in">
             Explore my collection of web applications, from e-commerce platforms to AI-powered tools. 
             Each project showcases modern technologies and best practices.
           </p>
