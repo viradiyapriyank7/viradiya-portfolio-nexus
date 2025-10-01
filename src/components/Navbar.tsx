@@ -1,19 +1,21 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
   const navItems = [
-    { id: "home", label: "Home" },
-    { id: "skills", label: "Skills" },
-    { id: "projects", label: "Projects" },
-    { id: "services", label: "Services" },
-    { id: "testimonials", label: "Testimonials" },
-    { id: "faq", label: "FAQ" },
-    { id: "contact", label: "Contact" },
+    { id: "home", label: "Home", path: "/" },
+    { id: "skills", label: "Skills", path: "/#skills" },
+    { id: "projects", label: "Projects", path: "/projects" },
+    { id: "services", label: "Services", path: "/#services" },
+    { id: "testimonials", label: "Testimonials", path: "/#testimonials" },
+    { id: "faq", label: "FAQ", path: "/#faq" },
+    { id: "contact", label: "Contact", path: "/#contact" },
   ];
 
   useEffect(() => {
@@ -70,25 +72,54 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection(item.id);
-                }}
-                className={`text-sm font-medium transition-colors ${
-                  activeSection === item.id 
-                    ? "text-primary font-semibold" 
-                    : isScrolled 
-                      ? "text-foreground/70 hover:text-primary"
-                      : "text-white/90 hover:text-white"
-                }`}
-              >
-                {item.label}
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const isProjectsPage = item.id === "projects";
+              const isActive = isProjectsPage 
+                ? location.pathname === "/projects"
+                : activeSection === item.id;
+              
+              if (isProjectsPage) {
+                return (
+                  <Link
+                    key={item.id}
+                    to="/projects"
+                    className={`text-sm font-medium transition-colors ${
+                      isActive 
+                        ? "text-primary font-semibold" 
+                        : isScrolled 
+                          ? "text-foreground/70 hover:text-primary"
+                          : "text-white/90 hover:text-white"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              }
+              
+              return (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (location.pathname !== "/") {
+                      window.location.href = `/#${item.id}`;
+                    } else {
+                      scrollToSection(item.id);
+                    }
+                  }}
+                  className={`text-sm font-medium transition-colors ${
+                    isActive 
+                      ? "text-primary font-semibold" 
+                      : isScrolled 
+                        ? "text-foreground/70 hover:text-primary"
+                        : "text-white/90 hover:text-white"
+                  }`}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
           </div>
 
           {/* Mobile Menu Button */}
@@ -106,21 +137,48 @@ const Navbar = () => {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden pb-4 animate-fade-in">
-            {navItems.map((item) => (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection(item.id);
-                }}
-                className={`block py-3 text-sm font-medium transition-colors hover:text-primary ${
-                  activeSection === item.id ? "text-primary" : "text-foreground/70"
-                }`}
-              >
-                {item.label}
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const isProjectsPage = item.id === "projects";
+              const isActive = isProjectsPage 
+                ? location.pathname === "/projects"
+                : activeSection === item.id;
+              
+              if (isProjectsPage) {
+                return (
+                  <Link
+                    key={item.id}
+                    to="/projects"
+                    onClick={() => setIsOpen(false)}
+                    className={`block py-3 text-sm font-medium transition-colors hover:text-primary ${
+                      isActive ? "text-primary" : "text-foreground/70"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              }
+              
+              return (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (location.pathname !== "/") {
+                      window.location.href = `/#${item.id}`;
+                    } else {
+                      scrollToSection(item.id);
+                    }
+                    setIsOpen(false);
+                  }}
+                  className={`block py-3 text-sm font-medium transition-colors hover:text-primary ${
+                    isActive ? "text-primary" : "text-foreground/70"
+                  }`}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
           </div>
         )}
       </div>
