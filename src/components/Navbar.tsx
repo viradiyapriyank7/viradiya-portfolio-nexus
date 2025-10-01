@@ -63,7 +63,9 @@ const Navbar = () => {
               e.preventDefault();
               scrollToSection("home");
             }}
-            className="text-2xl font-bold text-primary"
+            className={`text-2xl font-bold transition-colors ${
+              isScrolled ? "text-primary" : "text-white"
+            }`}
           >
             PV
           </a>
@@ -78,8 +80,10 @@ const Navbar = () => {
                   e.preventDefault();
                   scrollToSection(item.id);
                 }}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  activeSection === item.id ? "text-primary" : "text-foreground/70"
+                className={`text-sm font-medium transition-colors ${
+                  isScrolled 
+                    ? activeSection === item.id ? "text-primary" : "text-foreground/70 hover:text-primary"
+                    : activeSection === item.id ? "text-white font-semibold" : "text-white/90 hover:text-white"
                 }`}
               >
                 {item.label}
@@ -90,7 +94,9 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-foreground hover:text-primary transition-colors"
+            className={`md:hidden p-2 transition-colors ${
+              isScrolled ? "text-foreground hover:text-primary" : "text-white hover:text-white/80"
+            }`}
             aria-label="Toggle menu"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
