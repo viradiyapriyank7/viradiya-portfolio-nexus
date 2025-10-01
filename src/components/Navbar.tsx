@@ -63,9 +63,7 @@ const Navbar = () => {
               e.preventDefault();
               scrollToSection("home");
             }}
-            className={`text-2xl font-bold transition-colors ${
-              isScrolled ? "text-primary" : "text-white"
-            }`}
+            className="text-2xl font-bold text-primary transition-colors"
           >
             PV
           </a>
@@ -81,9 +79,11 @@ const Navbar = () => {
                   scrollToSection(item.id);
                 }}
                 className={`text-sm font-medium transition-colors ${
-                  isScrolled 
-                    ? activeSection === item.id ? "text-primary" : "text-foreground/70 hover:text-primary"
-                    : activeSection === item.id ? "text-white font-semibold" : "text-white/90 hover:text-white"
+                  activeSection === item.id 
+                    ? "text-primary font-semibold" 
+                    : isScrolled 
+                      ? "text-foreground/70 hover:text-primary"
+                      : "text-white/90 hover:text-white"
                 }`}
               >
                 {item.label}
